@@ -6,6 +6,7 @@
 <title>حاسبة الفدان والقيراط والسهم – احترافية</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <style>
 :root {
     --primary: #1e40af;
@@ -70,7 +71,7 @@ h2 {
 }
 .plot-row {
     display: grid;
-    grid-template-columns: 150px 1fr 1fr 1fr 1fr 80px;
+    grid-template-columns: 120px 1fr 1fr 1fr 1fr 1fr 80px;
     gap: 15px;
     align-items: end;
     padding: 20px;
@@ -89,18 +90,17 @@ h2 {
     text-align: center;
     margin-bottom: 8px;
 }
-input, select {
-    padding: 14px;
+input {
+    padding: 12px;
     border: 2px solid var(--border);
     border-radius: 10px;
     font-size: 1.1rem;
     text-align: center;
-    transition: all 0.3s;
-    font-family: 'Tajawal', sans-serif;
+    width: 100%;
+    box-sizing: border-box;
 }
-input:focus, select:focus {
-    outline: none;
-    border-color: var(--primary);
+input:focus {
+    border-color: var(--primary) !important;
     box-shadow: 0 0 0 4px rgba(59,130,246,0.2);
 }
 .remove-btn {
@@ -112,10 +112,6 @@ input:focus, select:focus {
     border-radius: 50%;
     cursor: pointer;
     font-size: 1.3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: auto;
 }
 .add-plot-btn {
     background: var(--success);
@@ -129,11 +125,6 @@ input:focus, select:focus {
     align-items: center;
     gap: 10px;
     margin: 25px auto;
-    transition: all 0.3s;
-}
-.add-plot-btn:hover {
-    background: #059669;
-    transform: translateY(-2px);
 }
 .result-box {
     background: linear-gradient(135deg, #ecfdf5, #d1fae5);
@@ -144,232 +135,158 @@ input:focus, select:focus {
     margin: 30px 0;
     font-size: 1.5rem;
 }
-.result-box h3 {
-    color: var(--success);
-    margin-bottom: 20px;
-    font-size: 2rem;
-}
-.final-result {
-    font-size: 2.8rem;
-    font-weight: 900;
-    color: var(--primary);
-    margin: 15px 0;
-}
-.meters {
-    font-size: 1.8rem;
-    color: #059669;
-    font-weight: bold;
-}
-footer {
-    text-align: center;
-    padding: 30px;
-    background: #1f2937;
-    color: white;
-    font-size: 1.1rem;
-}
-@media (max-width: 992px) {
-    .plot-row { grid-template-columns: 1fr; }
-    header h1 { font-size: 2.2rem; }
+.final-result { font-size: 2.8rem; font-weight: 900; color: var(--primary); }
+.meters { font-size: 1.8rem; color: #059669; font-weight: bold; }
+.price-output { font-size: 1.7rem; color: #1d4ed8; font-weight: bold; }
+
+@media print {
+    button, .add-plot-btn, .remove-btn { display: none !important; }
+    body { background: white !important; padding: 0 !important; margin: 0 !important; }
+    .container { box-shadow: none !important; border-radius: 0 !important; width:100%; margin:0; padding:0; }
+    header { background:white !important; color:black !important; border-bottom:2px solid #000; padding:12px !important; }
+    h1 { font-size: 22px !important; } header p { font-size: 16px !important; }
+    .main-content { padding:10px 20px !important; }
+    .section { background:white !important; border:1px solid #ccc !important; padding:15px !important; margin-bottom:20px; page-break-inside:avoid; }
+    .plot-row { background:white !important; border:1px solid #bbb !important; padding:10px !important; gap:10px !important; grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr !important; }
+    input { border:1px solid #444 !important; font-size:13px !important; padding:6px !important; background:#fafafa !important; }
+    .result-box { background:white !important; border:2px solid black !important; padding:20px !important; }
+    footer { display:none !important; }
+    @page { size:A4; margin:1.4cm; }
 }
 </style>
 </head>
 <body>
 <div class="container">
+
 <header>
-    <h1>حاسبة الفدان والقيراط والسهم</h1>
-    <p>أداة احترافية لحساب مساحات الأراضي الزراعية بدقة متناهية</p>
+<h1>حاسبة الفدان والقيراط والسهم</h1>
+<p>تطبيق احترافي لحساب المساحات والأسعار طبقًا للمعايير المصرية</p>
 </header>
 
 <div class="main-content">
 
-<div class="section">
-    <h2>أدخل بيانات قطع الأراضي</h2>
-    <div id="plots-container" class="plots-container">
-        <div class="plot-row">
-            <div>
-                <div class="plot-header">رقم الحوض</div>
-                <input type="text" class="basin" placeholder="مثل: 15/أ">
-            </div>
-            <div>
-                <div class="plot-header">الفدان</div>
-                <input type="number" class="feddan" min="0" value="0">
-            </div>
-            <div>
-                <div class="plot-header">القيراط</div>
-                <input type="number" class="qirat" min="0" max="23" value="0">
-            </div>
-            <div>
-                <div class="plot-header">السهم</div>
-                <input type="number" class="sahm" min="0" max="23" value="0">
-            </div>
-            <div>
-                <div class="plot-header">المساحة م²</div>
-                <input type="text" class="area-m2" readonly style="background:#f0fdf4; color:#059669; font-weight:bold;">
-            </div>
-            <div>
-                <button class="remove-btn" onclick="removePlot(this)">×</button>
-            </div>
-        </div>
-    </div>
+<button onclick="window.print()" style="background:#1e40af;color:white;padding:12px 25px;border:none;border-radius:10px;font-size:1.2rem;cursor:pointer;margin-bottom:20px;">
+<i class="fas fa-print"></i> طباعة PDF
+</button>
 
-    <button class="add-plot-btn" onclick="addPlot()">
-        <i class="fas fa-plus"></i>
-        إضافة قطعة أرض جديدة
-    </button>
+<div class="section">
+<h2>سعر الفدان</h2>
+<input type="number" id="feddan-price" placeholder="أدخل سعر الفدان بالجنيه" oninput="calculateTotal()">
 </div>
 
 <div class="section">
-    <h2>طرح مساحة (اختياري)</h2>
-    <div id="subtract-container" class="plots-container">
-        <div class="plot-row" style="grid-template-columns: 150px 1fr 1fr 1fr 1fr 80px; background:#fefce8;">
-            <div>
-                <div class="plot-header">رقم الحوض</div>
-                <input type="text" class="sub-basin" placeholder="اختياري">
-            </div>
-            <div>
-                <div class="plot-header">الفدان</div>
-                <input type="number" class="sub-feddan" min="0" value="0">
-            </div>
-            <div>
-                <div class="plot-header">القيراط</div>
-                <input type="number" class="sub-qirat" min="0" max="23" value="0">
-            </div>
-            <div>
-                <div class="plot-header">السهم</div>
-                <input type="number" class="sub-sahm" min="0" max="23" value="0">
-            </div>
-            <div>
-                <div class="plot-header">المساحة م²</div>
-                <input type="text" class="sub-area-m2" readonly style="background:#fee2e2; color:#dc2626; font-weight:bold;">
-            </div>
-            <div>
-                <button class="remove-btn" onclick="removeSubPlot(this)">×</button>
-            </div>
-        </div>
-    </div>
-    <button class="add-plot-btn" onclick="addSubPlot()">
-        <i class="fas fa-plus"></i>
-        إضافة مساحة للطرح
-    </button>
+<h2>أدخل بيانات قطع الأراضي</h2>
+<div id="plots-container" class="plots-container">
+<div class="plot-row">
+  <div><div class="plot-header">رقم الحوض</div><input type="text" class="basin"></div>
+  <div><div class="plot-header">الفدان</div><input type="number" class="feddan" value="0"></div>
+  <div><div class="plot-header">القيراط</div><input type="number" class="qirat" value="0"></div>
+  <div><div class="plot-header">السهم</div><input type="number" class="sahm" value="0"></div>
+  <div><div class="plot-header">المساحة م²</div><input type="text" class="area-m2" readonly></div>
+  <div><div class="plot-header">سعر القطعة</div><input type="text" class="area-price" readonly></div>
+  <div><button class="remove-btn" onclick="removePlot(this)">×</button></div>
+</div>
+</div>
+<button class="add-plot-btn" onclick="addPlot()"><i class="fas fa-plus"></i> إضافة قطعة أرض جديدة</button>
+</div>
+
+<div class="section">
+<h2>طرح مساحات (اختياري)</h2>
+<div id="subtract-container" class="plots-container">
+<div class="plot-row" style="background:#fefce8;">
+  <div><div class="plot-header">رقم الحوض</div><input type="text" class="sub-basin"></div>
+  <div><div class="plot-header">الفدان</div><input type="number" class="sub-feddan" value="0"></div>
+  <div><div class="plot-header">القيراط</div><input type="number" class="sub-qirat" value="0"></div>
+  <div><div class="plot-header">السهم</div><input type="number" class="sub-sahm" value="0"></div>
+  <div><div class="plot-header">المساحة م²</div><input type="text" class="sub-area-m2" readonly></div>
+  <div><div class="plot-header">سعر القطعة</div><input type="text" class="sub-area-price" readonly></div>
+  <div><button class="remove-btn" onclick="removeSubPlot(this)">×</button></div>
+</div>
+</div>
+<button class="add-plot-btn" onclick="addSubPlot()"><i class="fas fa-plus"></i> إضافة مساحة للطرح</button>
 </div>
 
 <div class="result-box">
-    <h3>النتيجة النهائية</h3>
-    <div class="final-result" id="final-result">0 فدان و0 قيراط و0 سهم</div>
-    <div class="meters" id="total-meters">0.00 متر مربع</div>
+<h3>النتيجة النهائية</h3>
+<div class="final-result" id="final-result">0 فدان و0 قيراط و0 سهم</div>
+<div class="meters" id="total-meters">0 متر مربع</div>
+<div class="price-output" id="total-price">0 جنيه</div>
 </div>
 
 </div>
+
 <footer>
-    حاسبة الفدان والقيراط والسهم الاحترافية © 2025 - تعتمد المعايير الرسمية المصرية (1 سهم = 7.35 م²)
+© 2025 — حاسبة الفدان والقيراط والسهم — المعايير المصرية الرسمية
 </footer>
+
 </div>
 
 <script>
 const SHARE_SQM = 7.35;
 
 function addPlot() {
-    const container = document.getElementById('plots-container');
     const row = document.createElement('div');
-    row.className = 'plot-row';
+    row.className = "plot-row";
     row.innerHTML = `
-        <div><div class="plot-header">رقم الحوض</div><input type="text" class="basin" placeholder="مثل: 15/أ"></div>
-        <div><div class="plot-header">الفدان</div><input type="number" class="feddan" min="0" value="0"></div>
-        <div><div class="plot-header">القيراط</div><input type="number" class="qirat" min="0" max="23" value="0"></div>
-        <div><div class="plot-header">السهم</div><input type="number" class="sahm" min="0" max="23" value="0"></div>
-        <div><div class="plot-header">المساحة م²</div><input type="text" class="area-m2" readonly style="background:#f0fdf4; color:#059669; font-weight:bold;"></div>
-        <div><button class="remove-btn" onclick="removePlot(this)">×</button></div>`;
-    container.appendChild(row);
-    attachInputEvents(row, false);
-}
-
-function removePlot(btn) {
-    if (document.querySelectorAll('.plot-row').length > 1) {
-        btn.closest('.plot-row').remove();
-        calculateTotal();
-    }
+    <div><div class="plot-header">رقم الحوض</div><input type="text" class="basin"></div>
+    <div><div class="plot-header">الفدان</div><input type="number" class="feddan" value="0"></div>
+    <div><div class="plot-header">القيراط</div><input type="number" class="qirat" value="0"></div>
+    <div><div class="plot-header">السهم</div><input type="number" class="sahm" value="0"></div>
+    <div><div class="plot-header">المساحة م²</div><input type="text" class="area-m2" readonly></div>
+    <div><div class="plot-header">سعر القطعة</div><input type="text" class="area-price" readonly></div>
+    <div><button class="remove-btn" onclick="removePlot(this)">×</button></div>`;
+    document.getElementById("plots-container").appendChild(row);
+    attachEvents(row,false);
 }
 
 function addSubPlot() {
-    const container = document.getElementById('subtract-container');
     const row = document.createElement('div');
-    row.className = 'plot-row';
-    row.style.background = "#fefce8";
+    row.className = "plot-row"; row.style.background="#fefce8";
     row.innerHTML = `
-        <div><div class="plot-header">رقم الحوض</div><input type="text" class="sub-basin" placeholder="اختياري"></div>
-        <div><div class="plot-header">الفدان</div><input type="number" class="sub-feddan" min="0" value="0"></div>
-        <div><div class="plot-header">القيراط</div><input type="number" class="sub-qirat" min="0" max="23" value="0"></div>
-        <div><div class="plot-header">السهم</div><input type="number" class="sub-sahm" min="0" max="23" value="0"></div>
-        <div><div class="plot-header">المساحة م²</div><input type="text" class="sub-area-m2" readonly style="background:#fee2e2; color:#dc2626; font-weight:bold;"></div>
-        <div><button class="remove-btn" onclick="removeSubPlot(this)">×</button></div>`;
-    container.appendChild(row);
-    attachInputEvents(row, true);
+    <div><div class="plot-header">رقم الحوض</div><input type="text" class="sub-basin"></div>
+    <div><div class="plot-header">الفدان</div><input type="number" class="sub-feddan" value="0"></div>
+    <div><div class="plot-header">القيراط</div><input type="number" class="sub-qirat" value="0"></div>
+    <div><div class="plot-header">السهم</div><input type="number" class="sub-sahm" value="0"></div>
+    <div><div class="plot-header">المساحة م²</div><input type="text" class="sub-area-m2" readonly></div>
+    <div><div class="plot-header">سعر القطعة</div><input type="text" class="sub-area-price" readonly></div>
+    <div><button class="remove-btn" onclick="removeSubPlot(this)">×</button></div>`;
+    document.getElementById("subtract-container").appendChild(row);
+    attachEvents(row,true);
 }
 
-function removeSubPlot(btn) {
-    if (document.querySelectorAll('#subtract-container .plot-row').length > 1) {
-        btn.closest('.plot-row').remove();
-        calculateTotal();
-    }
+function removePlot(btn){ if(document.querySelectorAll("#plots-container .plot-row").length>1){ btn.closest(".plot-row").remove(); calculateTotal(); } }
+function removeSubPlot(btn){ if(document.querySelectorAll("#subtract-container .plot-row").length>1){ btn.closest(".plot-row").remove(); calculateTotal(); } }
+
+function attachEvents(row,sub){
+    row.querySelectorAll("input[type='number']").forEach(i=>{ i.addEventListener("input",()=>{ updateRow(row,sub); calculateTotal(); }); });
 }
 
-function attachInputEvents(row, isSubtract) {
-    const inputs = row.querySelectorAll('input[type="number"]');
-    inputs.forEach(input => {
-        input.addEventListener('input', () => {
-            updateRowArea(row, isSubtract);
-            calculateTotal();
-        });
-    });
+function updateRow(row,sub){
+    const f = +row.querySelector(sub ? ".sub-feddan" : ".feddan").value || 0;
+    const q = +row.querySelector(sub ? ".sub-qirat" : ".qirat").value || 0;
+    const s = +row.querySelector(sub ? ".sub-sahm" : ".sahm").value || 0;
+    const shares = f*576 + q*24 + s;
+    const meters = shares*SHARE_SQM;
+    row.querySelector(sub?".sub-area-m2":".area-m2").value = meters.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,",")+" م²";
+    const fPrice = +document.getElementById("feddan-price").value || 0;
+    const price = shares * (fPrice/576);
+    row.querySelector(sub?".sub-area-price":".area-price").value = price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,",")+" ج.م";
 }
 
-function updateRowArea(row, isSubtract) {
-    const f = parseInt(row.querySelector(isSubtract ? '.sub-feddan' : '.feddan')?.value) || 0;
-    const q = parseInt(row.querySelector(isSubtract ? '.sub-qirat' : '.qirat')?.value) || 0;
-    const s = parseInt(row.querySelector(isSubtract ? '.sub-sahm' : '.sahm')?.value) || 0;
-    const totalShares = f * 576 + q * 24 + s;
-    const meters = (totalShares * SHARE_SQM).toFixed(2);
-    row.querySelector(isSubtract ? '.sub-area-m2' : '.area-m2').value = meters.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " م²";
+function calculateTotal(){
+    let shares = 0;
+    document.querySelectorAll("#plots-container .plot-row").forEach(row=>{ const f=+row.querySelector(".feddan").value||0; const q=+row.querySelector(".qirat").value||0; const s=+row.querySelector(".sahm").value||0; shares += f*576+q*24+s; updateRow(row,false); });
+    document.querySelectorAll("#subtract-container .plot-row").forEach(row=>{ const f=+row.querySelector(".sub-feddan").value||0; const q=+row.querySelector(".sub-qirat").value||0; const s=+row.querySelector(".sub-sahm").value||0; shares -= (f*576+q*24+s); updateRow(row,true); });
+    shares = Math.max(0,shares);
+    const f=Math.floor(shares/576); const rem=shares%576; const q=Math.floor(rem/24); const s=rem%24;
+    document.getElementById("final-result").textContent=`${f} فدان و${q} قيراط و${s} سهم`;
+    document.getElementById("total-meters").textContent=(shares*SHARE_SQM).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,",")+" متر مربع";
+    const fPrice=+document.getElementById("feddan-price").value||0;
+    const totalPrice=shares*(fPrice/576);
+    document.getElementById("total-price").textContent=totalPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,",")+" جنيه";
 }
 
-function calculateTotal() {
-    let totalShares = 0;
-
-    // جمع كل قطع الأراضي
-    document.querySelectorAll('#plots-container .plot-row').forEach(row => {
-        const f = parseInt(row.querySelector('.feddan').value) || 0;
-        const q = parseInt(row.querySelector('.qirat').value) || 0;
-        const s = parseInt(row.querySelector('.sahm').value) || 0;
-        totalShares += f*576 + q*24 + s;
-        updateRowArea(row, false);
-    });
-
-    // طرح المساحات الاختيارية
-    document.querySelectorAll('#subtract-container .plot-row').forEach(row => {
-        const f = parseInt(row.querySelector('.sub-feddan').value) || 0;
-        const q = parseInt(row.querySelector('.sub-qirat').value) || 0;
-        const s = parseInt(row.querySelector('.sub-sahm').value) || 0;
-        totalShares -= f*576 + q*24 + s;
-        totalShares = Math.max(0, totalShares);
-        updateRowArea(row, true);
-    });
-
-    // تحويل الأسهم إلى فدان/قيراط/سهم
-    const feddan = Math.floor(totalShares / 576);
-    const remAfterFeddan = totalShares % 576;
-    const qirat = Math.floor(remAfterFeddan / 24);
-    const sahm = remAfterFeddan % 24;
-
-    document.getElementById('final-result').textContent = `${feddan} فدان و${qirat} قيراط و${sahm} سهم`;
-    document.getElementById('total-meters').textContent = (totalShares * SHARE_SQM).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " متر مربع";
-}
-
-// تهيئة الأحداث عند تحميل الصفحة
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.plot-row').forEach(row => attachInputEvents(row, false));
-    document.querySelectorAll('#subtract-container .plot-row').forEach(row => attachInputEvents(row, true));
-    calculateTotal();
-});
+document.addEventListener("DOMContentLoaded",()=>{ document.querySelectorAll("#plots-container .plot-row").forEach(r=>attachEvents(r,false)); document.querySelectorAll("#subtract-container .plot-row").forEach(r=>attachEvents(r,true)); });
 </script>
 </body>
 </html>
